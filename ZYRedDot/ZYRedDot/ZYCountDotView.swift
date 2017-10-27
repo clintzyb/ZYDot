@@ -40,20 +40,20 @@ extension String{
 open class ZYCountDotView: UIView {
     
     // 默认背景为红色
-    @objc lazy var bgColor:UIColor = UIColor.red
+    @objc open lazy var bgColor:UIColor = UIColor.red
     
     // 默认文本颜色为白色
-    @objc lazy var textColor:UIColor = UIColor.white
+    @objc open lazy var textColor:UIColor = UIColor.white
     
     private var _badgeValue:String = "0"
     // 是否绘制文本 在文本长度为0时不绘制
     private var isDrawBadge:Bool = true
-    @objc var  badgeTopBottomPadding:CGFloat = constTopBottomPadding
-    @objc var  baggeLeftRihtPadding:CGFloat = constLeftRightPadding
+    @objc open var  badgeTopBottomPadding:CGFloat = constTopBottomPadding
+    @objc open var  baggeLeftRihtPadding:CGFloat = constLeftRightPadding
     // 使用默认位置(badge添加到父视图的地址)
-    @objc var  isUseDefaultPoisition:Bool = true
+    @objc open var  isUseDefaultPoisition:Bool = true
     
- @objc var badgeValue:Int{
+ @objc open var badgeValue:Int{
         
         get{
             return Int(self._badgeValue)!
@@ -82,7 +82,7 @@ open class ZYCountDotView: UIView {
     ///
     /// - Parameter content: 要展示的内容
     /// - Returns:ZYCountDotView
-   @objc  class func zyCountDotView(content:Int=(-1))->Self{
+   @objc  open class func zyCountDotView(content:Int=(-1))->Self{
         let dotViewObject = self.init()
         dotViewObject._badgeValue = content>0 ? "\(content)":""
         return dotViewObject
@@ -161,7 +161,7 @@ open class ZYCountDotView: UIView {
     
     
     /// 有新的值进来后刷新视图
-   @objc  func refreshFrame()->Void{
+   @objc  open func refreshFrame()->Void{
         
         // 如果初始化没有值那么给高和宽一个默认值
         if self._badgeValue.characters.count == 0{
@@ -189,7 +189,7 @@ open class ZYCountDotView: UIView {
     /// 主要难过用于只作为小红点时使用
     ///
     /// - Parameter show: 是否展示
-   @objc  func showDot(show:Bool){
+   @objc  open func showDot(show:Bool){
         self.isHidden = !show
     }
     
