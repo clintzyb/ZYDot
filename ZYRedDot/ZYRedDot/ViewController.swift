@@ -37,10 +37,11 @@ class ViewController: UIViewController {
     @IBAction func add(_ sender: Any) {
         count = count+100
 //        self.dotView?.updateWithBadge(badge: count)
-        self.dotView?.badgeValue = count
+        self.dotView?.hidenWhenNoCount = true
+        self.dotView?.badgeValue = 0
     }
     @IBAction func onlyShowDot(_ sender: Any) {
-        self.dotView?.badgeValue = -1
+        self.dotView?.badgeValue = 100
     }
     
 

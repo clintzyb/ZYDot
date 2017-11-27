@@ -94,6 +94,15 @@ open class ZYCountDotView: UIView {
             return bdgeValue
         }
         set{
+            
+            if(newValue <= 0){
+                if(true == self.hidenWhenNoCount){
+                   self.showDot(show: false)
+                    return;
+                }
+            }else{
+                self.showDot(show: true)
+            }
             if newValue < 0{
                 self._badgeValue = ""
             }
