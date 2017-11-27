@@ -9,8 +9,8 @@
 import UIKit
 
 let font  = UIFont.systemFont(ofSize: 15.0)
-let constLeftRightPadding = CGFloat(2.0)
-let constTopBottomPadding = CGFloat(2.0)
+let constLeftRightPadding = CGFloat(3.0)
+let constTopBottomPadding = CGFloat(3.0)
 extension String{
     
     var ZYRedTextSize:CGSize{
@@ -46,23 +46,59 @@ open class ZYCountDotView: UIView {
     @objc open lazy var textColor:UIColor = UIColor.white
     
     private var _badgeValue:String = "0"
+    
+    private var showMoreCount:Bool{
+        
+        get{
+            if(self.moreCount > -1){
+                return true
+            }
+            return false
+        }
+    };
+    
+    private var drawString:String{
+        get{
+            var badgeString = self._badgeValue as String
+
+            if true == self.showMoreCount{
+                if(self.badgeValue > self.moreCount){
+                    badgeString = "\(self.moreCount)+";
+                }
+            }
+            return badgeString
+        }
+    }
+    
+    
     // 是否绘制文本 在文本长度为0时不绘制
     private var isDrawBadge:Bool = true
     @objc open var  badgeTopBottomPadding:CGFloat = constTopBottomPadding
     @objc open var  baggeLeftRihtPadding:CGFloat = constLeftRightPadding
+    
+    
     // 使用默认位置(badge添加到父视图的地址)
     @objc open var  isUseDefaultPoisition:Bool = true
+    // 当超过这个数时显示为xx+ -1 不开启
+    @objc open var moreCount:Int = -1;
+    // 当count为0时是否隐藏视图
+    @objc open var hidenWhenNoCount:Bool = false;
     
  @objc open var badgeValue:Int{
         
         get{
-            return Int(self._badgeValue)!
+            
+            guard let bdgeValue = Int(self._badgeValue) else {
+                return -1;
+            }
+            return bdgeValue
         }
         set{
             if newValue < 0{
                 self._badgeValue = ""
             }
             else{
+                
                 self._badgeValue = "\(newValue)"
             }
             self.refreshFrame()
@@ -133,6 +169,8 @@ open class ZYCountDotView: UIView {
         
         if true == isDrawBadge{
             // 绘制badgeValue
+
+            
             context.setFillColor(self.textColor.cgColor)
             let badgeTextStyle = NSMutableParagraphStyle()
             badgeTextStyle.alignment = NSTextAlignment.center
@@ -144,10 +182,8 @@ open class ZYCountDotView: UIView {
             
             
             
-            
-            let badgeValueForNSString = self._badgeValue as NSString
-            let badgeSize = self._badgeValue.ZYRedTextSize
-            badgeValueForNSString.draw(in: CGRect(x: self.baggeLeftRihtPadding,
+            let badgeSize = self.drawString.ZYRedTextSize
+            self.drawString.draw(in: CGRect(x: self.baggeLeftRihtPadding,
                                                   y: self.badgeTopBottomPadding,
                                                   width: badgeSize.width,
                                                   height: badgeSize.height),
@@ -162,17 +198,21 @@ open class ZYCountDotView: UIView {
     
     /// 有新的值进来后刷新视图
    @objc  open func refreshFrame()->Void{
+    
         
         // 如果初始化没有值那么给高和宽一个默认值
-        if self._badgeValue.characters.count == 0{
+        if self.drawString.characters.count == 0{
             self.isDrawBadge = false
             self.frame.size.height = self.badgeTopBottomPadding*2
             self.frame.size.width = self.baggeLeftRihtPadding*2
         }
         else{
             self.isDrawBadge = true
-            self.frame.size.height = self._badgeValue.ZYRedTextSize.height+2*self.badgeTopBottomPadding
-            self.frame.size.width = self._badgeValue.ZYRedTextSize.width+2*self.baggeLeftRihtPadding
+            
+            
+            
+            self.frame.size.height = self.drawString.ZYRedTextSize.height+2*self.badgeTopBottomPadding
+            self.frame.size.width = self.drawString.ZYRedTextSize.width+2*self.baggeLeftRihtPadding
         }
     
     if true == isUseDefaultPoisition{
@@ -186,7 +226,7 @@ open class ZYCountDotView: UIView {
     }
     
     
-    /// 主要难过用于只作为小红点时使用
+    /// 主要用于只作为小红点时使用
     ///
     /// - Parameter show: 是否展示
    @objc  open func showDot(show:Bool){

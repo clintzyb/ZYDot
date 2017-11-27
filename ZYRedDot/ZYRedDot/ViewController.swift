@@ -23,6 +23,7 @@ class ViewController: UIViewController {
         self.dotView = ZYCountDotView.zyCountDotView(content: 1)
         self.dotView?.bgColor = UIColor.blue
         self.dotView?.textColor = UIColor.red
+        self.dotView?.moreCount = 1000
         myView.addSubview(self.dotView!)
         
       
